@@ -16,69 +16,106 @@
 
   <mat-card>
     <mat-card-content>
-      <!-- Filters -->
-      <div class="filter-bar">
-        <mat-form-field appearance="outline" class="search-field">
-          <mat-label>Buscar...</mat-label>
-          <mat-icon matPrefix>search</mat-icon>
-          <input matInput [ngModel]="searchQuery" (ngModelChange)="onSearchChange($event)" placeholder="Nombre del pasajero">
-        </mat-form-field>
-        <mat-form-field appearance="outline" style="width: 160px">
-          <mat-label>Estado</mat-label>
-          <mat-select [(ngModel)]="filterEstado" (ngModelChange)="onFilter()">
-            <mat-option value="">Todos</mat-option>
-            <mat-option *ngFor="let e of estadoOptions" [value]="e">{{ e }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field appearance="outline" style="width: 200px">
-          <mat-label>Ruta</mat-label>
-          <mat-select [(ngModel)]="filterRouteId" (ngModelChange)="onFilter()">
-            <mat-option value="">Todas las rutas</mat-option>
-            <mat-option *ngFor="let r of routes" [value]="r.id">{{ r.nombre }}</mat-option>
-          </mat-select>
-        </mat-form-field>
+
+      <!-- Filters con acordeón en móvil -->
+      <div class="filter-header" (click)="toggleFilters()">
+        <span class="filter-title"><mat-icon>filter_list</mat-icon> Filtros</span>
+        <mat-icon class="toggle-icon" [class.rotated]="filtersOpen">expand_more</mat-icon>
+      </div>
+      <div class="filter-accordion-body" [class.collapsed]="!filtersOpen">
+        <div class="filter-bar">
+          <mat-form-field appearance="outline" class="search-field">
+            <mat-label>Buscar...</mat-label>
+            <mat-icon matPrefix>search</mat-icon>
+            <input matInput [ngModel]="searchQuery" (ngModelChange)="onSearchChange($event)" placeholder="Nombre del pasajero">
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="filter-select">
+            <mat-label>Estado</mat-label>
+            <mat-select [(ngModel)]="filterEstado" (ngModelChange)="onFilter()">
+              <mat-option value="">Todos</mat-option>
+              <mat-option *ngFor="let e of estadoOptions" [value]="e">{{ e }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="filter-select">
+            <mat-label>Ruta</mat-label>
+            <mat-select [(ngModel)]="filterRouteId" (ngModelChange)="onFilter()">
+              <mat-option value="">Todas las rutas</mat-option>
+              <mat-option *ngFor="let r of routes" [value]="r.id">{{ r.nombre }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
       </div>
 
       <div *ngIf="loading" class="loading"><mat-spinner diameter="40"></mat-spinner></div>
 
-      <table mat-table [dataSource]="passengers" *ngIf="!loading" class="full-width">
-        <ng-container matColumnDef="nombre">
-          <th mat-header-cell *matHeaderCellDef>Nombre</th>
-          <td mat-cell *matCellDef="let p"><strong>{{ p.nombre }}</strong></td>
-        </ng-container>
-        <ng-container matColumnDef="documento">
-          <th mat-header-cell *matHeaderCellDef>Documento</th>
-          <td mat-cell *matCellDef="let p">{{ p.documento }}</td>
-        </ng-container>
-        <ng-container matColumnDef="telefono">
-          <th mat-header-cell *matHeaderCellDef>Teléfono</th>
-          <td mat-cell *matCellDef="let p">{{ p.telefono || '—' }}</td>
-        </ng-container>
-        <ng-container matColumnDef="estado">
-          <th mat-header-cell *matHeaderCellDef>Estado</th>
-          <td mat-cell *matCellDef="let p">
+      <!-- Desktop table -->
+      <div class="table-scroll desktop-table" *ngIf="!loading">
+        <table mat-table [dataSource]="passengers" class="full-width">
+          <ng-container matColumnDef="nombre">
+            <th mat-header-cell *matHeaderCellDef>Nombre</th>
+            <td mat-cell *matCellDef="let p"><strong>{{ p.nombre }}</strong></td>
+          </ng-container>
+          <ng-container matColumnDef="documento">
+            <th mat-header-cell *matHeaderCellDef>Documento</th>
+            <td mat-cell *matCellDef="let p">{{ p.documento }}</td>
+          </ng-container>
+          <ng-container matColumnDef="telefono">
+            <th mat-header-cell *matHeaderCellDef>Teléfono</th>
+            <td mat-cell *matCellDef="let p">{{ p.telefono || '—' }}</td>
+          </ng-container>
+          <ng-container matColumnDef="estado">
+            <th mat-header-cell *matHeaderCellDef>Estado</th>
+            <td mat-cell *matCellDef="let p">
+              <mat-chip [color]="getStatusColor(p.estado)" selected>{{ p.estado }}</mat-chip>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="gps">
+            <th mat-header-cell *matHeaderCellDef>GPS</th>
+            <td mat-cell *matCellDef="let p">
+              <mat-icon [color]="p.lat ? 'primary' : ''"
+                        [matTooltip]="p.lat ? 'GPS activo: ' + p.lat + ', ' + p.lon : 'Sin señal GPS'">
+                {{ p.lat ? 'gps_fixed' : 'gps_off' }}
+              </mat-icon>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="acciones">
+            <th mat-header-cell *matHeaderCellDef>Acciones</th>
+            <td mat-cell *matCellDef="let p">
+              <button mat-icon-button matTooltip="Editar" (click)="editPassenger(p.id)"><mat-icon>edit</mat-icon></button>
+              <button mat-icon-button matTooltip="Eliminar" color="warn" (click)="deletePassenger(p, $event)"><mat-icon>delete</mat-icon></button>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>
+
+      <!-- Mobile cards -->
+      <div class="mobile-cards" *ngIf="!loading">
+        <div class="mobile-card" *ngFor="let p of passengers">
+          <div class="mc-title">{{ p.nombre }}</div>
+          <div class="mc-row">
+            <span class="mc-label">Documento</span>
+            <span class="mc-value">{{ p.documento }}</span>
+          </div>
+          <div class="mc-row" *ngIf="p.telefono">
+            <span class="mc-label">Teléfono</span>
+            <span class="mc-value">{{ p.telefono }}</span>
+          </div>
+          <div class="mc-row">
+            <span class="mc-label">Estado</span>
             <mat-chip [color]="getStatusColor(p.estado)" selected>{{ p.estado }}</mat-chip>
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="gps">
-          <th mat-header-cell *matHeaderCellDef>GPS</th>
-          <td mat-cell *matCellDef="let p">
-            <mat-icon [color]="p.lat ? 'primary' : ''"
-                      [matTooltip]="p.lat ? 'GPS activo: ' + p.lat + ', ' + p.lon : 'Sin señal GPS'">
-              {{ p.lat ? 'gps_fixed' : 'gps_off' }}
-            </mat-icon>
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="acciones">
-          <th mat-header-cell *matHeaderCellDef>Acciones</th>
-          <td mat-cell *matCellDef="let p">
-            <button mat-icon-button matTooltip="Editar" (click)="editPassenger(p.id)"><mat-icon>edit</mat-icon></button>
-            <button mat-icon-button matTooltip="Eliminar" color="warn" (click)="deletePassenger(p, $event)"><mat-icon>delete</mat-icon></button>
-          </td>
-        </ng-container>
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-      </table>
+          </div>
+          <div class="mc-row">
+            <span class="mc-label">GPS</span>
+            <mat-icon [color]="p.lat ? 'primary' : ''">{{ p.lat ? 'gps_fixed' : 'gps_off' }}</mat-icon>
+          </div>
+          <div class="mc-actions">
+            <button mat-icon-button (click)="editPassenger(p.id)"><mat-icon>edit</mat-icon></button>
+            <button mat-icon-button color="warn" (click)="deletePassenger(p, $event)"><mat-icon>delete</mat-icon></button>
+          </div>
+        </div>
+      </div>
 
       <div *ngIf="!loading && passengers.length === 0" class="empty-state">
         <mat-icon>people_outline</mat-icon>

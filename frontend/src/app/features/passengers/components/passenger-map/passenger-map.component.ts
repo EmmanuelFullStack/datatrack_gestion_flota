@@ -87,6 +87,7 @@ export class PassengerMapComponent implements OnInit, AfterViewInit, OnDestroy {
   loading      = true;
   lastUpdate:  Date | null = null;
   wsConnected  = false;
+  sidebarOpen  = false;
 
   readonly estadoOptions = [
     { value: 'PENDIENTE',   label: 'Pendiente',   color: '#9e9e9e' },
@@ -254,6 +255,10 @@ export class PassengerMapComponent implements OnInit, AfterViewInit, OnDestroy {
 
   get markerCount(): number {
     return this.markerMap.size;
+  }
+
+  toggleSidebar(): void {
+    this.sidebarOpen = !this.sidebarOpen;
   }
 
   ngOnDestroy(): void {

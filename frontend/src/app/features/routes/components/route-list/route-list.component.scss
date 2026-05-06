@@ -1,7 +1,6 @@
 .page-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 24px;
 }
 
 .page-header {
@@ -9,6 +8,8 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 32px;
+  flex-wrap: wrap;
+  gap: 12px;
 
   .premium-title {
     display: flex;
@@ -161,4 +162,13 @@ mat-paginator {
   background: transparent;
   border-top: 1px solid #f0f2f7;
   padding: 8px 0;
+}
+
+@media (max-width: 600px) {
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    button { width: 100%; }
+  }
+  .premium-subtitle { font-size: 13px; }
 }

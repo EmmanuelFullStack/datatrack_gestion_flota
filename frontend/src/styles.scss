@@ -300,3 +300,120 @@ h1, h2, h3, h4, h5, h6 {
   .liquid-glass-dialog .mat-mdc-dialog-actions { padding: 10px 16px !important; }
 }
 
+/* ─── Global Responsive Utilities ─────────────────────────────────────────── */
+
+/* Scrollable table wrapper for mobile */
+.table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 12px;
+}
+
+/* Row fields: flex row on desktop, column on mobile */
+.row-fields {
+  display: flex;
+  gap: 16px;
+
+  > mat-form-field,
+  > .half-width { flex: 1; }
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    gap: 0;
+  }
+}
+
+/* Mobile dialog full-width */
+@media (max-width: 600px) {
+  .cdk-overlay-pane {
+    max-width: 96vw !important;
+  }
+
+  /* Smaller table cells on mobile */
+  .mat-mdc-cell,
+  .mat-mdc-header-cell {
+    padding: 10px 12px !important;
+    font-size: 13px !important;
+  }
+
+  /* Hide less important columns via utility class */
+  .hide-mobile { display: none !important; }
+
+  /* Stack page header */
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+
+    .header-actions {
+      width: 100%;
+      flex-wrap: wrap;
+      gap: 8px;
+
+      button { flex: 1; min-width: 120px; }
+    }
+  }
+}
+
+/* Accordion filter animation */
+@keyframes accordionOpen {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.filter-accordion-body {
+  overflow: hidden;
+  transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity    0.3s ease;
+  max-height: 400px;
+  opacity: 1;
+
+  &.collapsed {
+    max-height: 0;
+    opacity: 0;
+  }
+}
+
+/* Mobile card rows for tables */
+.mobile-cards { display: none; }
+
+@media (max-width: 600px) {
+  .desktop-table { display: none; }
+  .mobile-cards  { display: block; }
+
+  .mobile-card {
+    background: white;
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    animation: accordionOpen 0.25s ease;
+
+    .mc-title {
+      font-weight: 700;
+      font-size: 15px;
+      color: #1a237e;
+    }
+
+    .mc-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      color: #546e7a;
+
+      .mc-label { font-weight: 500; }
+      .mc-value { color: #263238; }
+    }
+
+    .mc-actions {
+      display: flex;
+      gap: 4px;
+      justify-content: flex-end;
+      margin-top: 4px;
+    }
+  }
+}
+

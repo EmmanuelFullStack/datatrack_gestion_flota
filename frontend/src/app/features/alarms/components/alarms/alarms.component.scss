@@ -1,7 +1,11 @@
 .page-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 24px;
+}
+
+@media (max-width: 600px) {
+  .page-header h1 { font-size: 18px; }
+  .page-header p  { font-size: 13px; }
 }
 
 .page-header {

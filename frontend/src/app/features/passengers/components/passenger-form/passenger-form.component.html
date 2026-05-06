@@ -13,14 +13,14 @@
         <mat-error *ngIf="form.get('nombre')?.hasError('required')">Requerido</mat-error>
       </mat-form-field>
 
-      <div class="row-fields" style="display: flex; gap: 16px; margin-bottom: 8px;">
-        <mat-form-field appearance="outline" style="flex: 1;">
+      <div class="row-fields">
+        <mat-form-field appearance="outline">
           <mat-label>Documento</mat-label>
           <input matInput formControlName="documento" placeholder="Identificación">
           <mat-error *ngIf="form.get('documento')?.hasError('required')">Requerido</mat-error>
         </mat-form-field>
 
-        <mat-form-field appearance="outline" style="flex: 1;">
+        <mat-form-field appearance="outline">
           <mat-label>Teléfono</mat-label>
           <mat-icon matPrefix>phone</mat-icon>
           <input matInput formControlName="telefono" placeholder="+57 ...">
@@ -35,15 +35,15 @@
         </mat-select>
       </mat-form-field>
 
-      <div class="row-fields" style="display: flex; gap: 16px; margin-bottom: 8px;">
-        <mat-form-field appearance="outline" style="flex: 1;">
+      <div class="row-fields">
+        <mat-form-field appearance="outline">
           <mat-label>Estado</mat-label>
           <mat-select formControlName="estado">
             <mat-option *ngFor="let e of estadoOptions" [value]="e">{{ e }}</mat-option>
           </mat-select>
         </mat-form-field>
 
-        <mat-form-field appearance="outline" style="flex: 1;">
+        <mat-form-field appearance="outline">
           <mat-label>ID Dispositivo</mat-label>
           <input matInput formControlName="deviceIdDatatrack" placeholder="Opcional">
         </mat-form-field>

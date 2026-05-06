@@ -76,6 +76,7 @@ export class PassengerListComponent implements OnInit, OnDestroy {
   searchQuery   = '';
   filterEstado  = '';
   filterRouteId = '';
+  filtersOpen   = true;
 
   readonly estadoOptions   = ['PENDIENTE', 'EMBARCADO', 'EN_TRANSITO', 'LLEGO'];
   readonly displayedColumns = ['nombre', 'documento', 'telefono', 'estado', 'gps', 'acciones'];
@@ -131,6 +132,10 @@ export class PassengerListComponent implements OnInit, OnDestroy {
   onFilter(): void {
     this.page = 1;
     this.loadPassengers();
+  }
+
+  toggleFilters(): void {
+    this.filtersOpen = !this.filtersOpen;
   }
 
   getStatusColor(estado: string): string {

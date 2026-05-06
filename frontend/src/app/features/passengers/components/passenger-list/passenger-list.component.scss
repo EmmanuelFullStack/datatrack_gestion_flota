@@ -1,14 +1,97 @@
 .page-container { max-width: 1200px; margin: 0 auto; }
-.page-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px;
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 12px;
+
   h1 { display: flex; align-items: center; gap: 8px; margin: 0; font-size: 22px; font-weight: 700; color: #1a237e; }
-  p { margin: 4px 0 0; color: #757575; font-size: 14px; }
-  .header-actions { display: flex; gap: 12px; align-items: center; }
+  p  { margin: 4px 0 0; color: #757575; font-size: 14px; }
+
+  .header-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
 }
-.filter-bar { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+
+/* Filter accordion header (visible on mobile) */
+.filter-header {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 4px;
+  cursor: pointer;
+  user-select: none;
+  border-bottom: 1px solid #f0f0f0;
+  margin-bottom: 4px;
+
+  .filter-title {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 600;
+    font-size: 14px;
+    color: #1a237e;
+    mat-icon { font-size: 18px; width: 18px; height: 18px; }
+  }
+
+  .toggle-icon {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    &.rotated { transform: rotate(180deg); }
+  }
+}
+
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  padding-top: 8px;
+}
+
 .search-field { flex: 1; min-width: 200px; }
+.filter-select { width: 160px; }
+
 .full-width { width: 100%; }
 .loading { display: flex; justify-content: center; padding: 40px; }
-.empty-state { display: flex; flex-direction: column; align-items: center; padding: 60px; color: #bdbdbd;
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 20px;
+  color: #bdbdbd;
+  text-align: center;
   mat-icon { font-size: 64px; height: 64px; width: 64px; margin-bottom: 12px; }
   p { font-size: 16px; margin-bottom: 16px; }
+}
+
+/* ── Mobile ──────────────────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+
+    .header-actions {
+      width: 100%;
+      button { flex: 1; font-size: 13px; }
+    }
+  }
+
+  .filter-header { display: flex; }
+
+  .filter-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding-top: 4px;
+  }
+
+  .search-field,
+  .filter-select { width: 100% !important; min-width: unset; flex: unset; }
 }
