@@ -71,57 +71,19 @@ src/modules/<module>/
 
 ---
 
-## Setup Local
+## Demo Online
 
-### Prerequisitos
+| Servicio | URL |
+|----------|-----|
+| Frontend | https://steadfast-purpose-production-d431.up.railway.app |
+| Backend API | https://datatrackgestionflota-production.up.railway.app/api/v1 |
+| Swagger Docs | https://datatrackgestionflota-production.up.railway.app/api/v1/docs |
 
-- Node.js 20+
-- Docker + Docker Compose
-
-### Con Docker Compose (recomendado)
-
-```bash
-# 1. Clonar el repositorio
-git clone https://github.com/EmmanuelFullStack/datatrack_gestion_flota
-cd datatrack-transport
-
-# 2. Configurar variables de entorno
-cp .env.example .env
-# Editar .env con credenciales (especialmente JWT_SECRET y DATATRACK_TOKEN)
-
-# 3. Ejecutar migraciones
-docker compose --profile migrate up migration
-
-# 4. Levantar todos los servicios
-docker compose up -d
-
-# Servicios disponibles:
-# Frontend: http://localhost:4200
-# Backend API: http://localhost:3000/api/v1
-# Swagger: http://localhost:3000/api/v1/docs
-# PostgreSQL: localhost:5432
-# Redis: localhost:6379
-```
-
-### Build Limpio y Re-despliegue
-Para asegurar que los cambios de base de datos y branding se apliquen correctamente, usa siempre esta secuencia:
-
-```bash
-# 1. Limpiar volúmenes y contenedores previos
-docker compose down -v
-
-# 2. Reconstruir imágenes (asegura migración consolidada)
-docker compose build
-
-# 3. Levantar todo el stack
-docker compose up -d
-```
-
-### Incluí estas credenciales aquí solo motivo de la prueba
+### Incluí estas credenciales aquí, solo por motivo de la prueba, en producción esto jamás iría
 
 ### Acceso Demo (Seed Data)
 
-El sistema incluye datos pre-cargados para pruebas inmediatas:
+El sistema incluye datos pre-cargados en DB desde una migración para pruebas inmediatas:
 
 - **Tenant 1**:
 
@@ -143,6 +105,54 @@ El sistema incluye datos pre-cargados para pruebas inmediatas:
 
 - **Usuario**: `admin@datatrack.com`
 - **Password**: `Admin12345!`
+---
+
+## Setup Local
+
+### Prerequisitos
+
+- Docker + Docker Compose
+- Node.js 20+ (solo para desarrollo sin Docker)
+
+### Con Docker Compose (recomendado)
+
+Las migraciones y el seed de datos se ejecutan **automáticamente** al levantar el stack. No se requiere ningún paso manual adicional.
+
+```bash
+# 1. Clonar el repositorio
+git clone https://github.com/EmmanuelFullStack/datatrack_gestion_flota
+cd datatrack-transport
+
+# 2. Configurar variables de entorno
+cp .env.example .env
+# Editar .env con tus credenciales (JWT_SECRET y DATATRACK_TOKEN son requeridos)
+
+# 3. Levantar todo el stack
+docker compose up -d
+```
+
+Al iniciar, Docker ejecuta en orden:
+1. PostgreSQL y Redis
+2. Migraciones (esquema + datos demo)
+3. Backend NestJS
+4. Frontend Angular + Nginx
+
+```
+# Servicios disponibles:
+# Frontend:   http://localhost:4200
+# Backend:    http://localhost:3000/api/v1
+# Swagger:    http://localhost:3000/api/v1/docs
+# PostgreSQL: localhost:5432
+# Redis:      localhost:6379
+```
+
+### Resetear la base de datos
+
+```bash
+# Elimina los volúmenes y vuelve a levantar (re-ejecuta migraciones y seed)
+docker compose down -v
+docker compose up -d
+```
 
 ### Setup Manual (desarrollo)
 
@@ -270,3 +280,5 @@ El WebSocket entrega latencia <1s para actualizaciones GPS. El polling HTTP cada
 4. **Rate limiting por tenant** además del global
 5. **Métricas con Prometheus + Grafana**
 6. **Event sourcing** para el historial de posiciones GPS
+
+
