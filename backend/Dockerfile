@@ -1,10 +1,7 @@
-# ─── Build stage ───────────────────────────────────────────────────────────────
+# ─── Build stage ────────────────────────────────────────────────────────────────
 FROM node:20-alpine AS builder
 
 WORKDIR /app
-
-COPY package*.json ./
-RUN npm ci --only=production && npm ci  # install dev deps too for build
 
 COPY package*.json ./
 RUN npm ci
@@ -14,7 +11,7 @@ COPY src ./src
 
 RUN npm run build
 
-# ─── Production stage ───────────────────────────────────────────────────────────
+# ─── Production stage ────────────────────────────────────────────────────────────
 FROM node:20-alpine AS production
 
 WORKDIR /app
@@ -27,12 +24,14 @@ COPY package*.json ./
 RUN npm ci --only=production && npm cache clean --force
 
 COPY --from=builder /app/dist ./dist
+COPY start.sh ./start.sh
+RUN chmod +x ./start.sh
 
 USER nestjs
 
 EXPOSE 3000
 
-HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
   CMD wget -qO- http://localhost:3000/api/v1/auth/health || exit 1
 
-CMD ["node", "dist/main"]
+CMD ["sh", "start.sh"]
