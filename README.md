@@ -281,4 +281,40 @@ El WebSocket entrega latencia <1s para actualizaciones GPS. El polling HTTP cada
 5. **Métricas con Prometheus + Grafana**
 6. **Event sourcing** para el historial de posiciones GPS
 
+##IMAGENES DEL SISTEMA
+LOGIN:
+<img width="1488" height="860" alt="image" src="https://github.com/user-attachments/assets/65ba68c4-5c52-4747-84c3-0beee60754f5" />
+
+LOGIN SUPER ADMIN: 
+<img width="999" height="757" alt="image" src="https://github.com/user-attachments/assets/7abe8b72-5f04-46cf-aa84-0b94338308b8" />
+
+SELECTOR DE TENANTS PARA SUPER ADMIN:
+<img width="1369" height="704" alt="image" src="https://github.com/user-attachments/assets/1dedec61-00bd-44d4-a568-0d4bbd470f58" />
+
+DASHBOARD: 
+<img width="1911" height="900" alt="image" src="https://github.com/user-attachments/assets/f0217994-e09e-4a21-a5bd-31043d2224fa" />
+
+RUTAS:
+<img width="1902" height="896" alt="image" src="https://github.com/user-attachments/assets/ad0287ca-9be8-4e20-b14b-ab4e5f291ed7" />
+
+CREACION O EDITCION DE RUTA:
+<img width="632" height="854" alt="image" src="https://github.com/user-attachments/assets/2449a2f9-9090-4b76-8c5c-5accb81d381a" />
+
+PASAJEROS:
+<img width="1902" height="899" alt="image" src="https://github.com/user-attachments/assets/4fb35983-1bf0-4ff6-81e1-3d96a76f6de9" />
+
+MAPA GPS:
+<img width="1905" height="896" alt="image" src="https://github.com/user-attachments/assets/407452be-e37e-43eb-bfad-65ae9c8aa20a" />
+
+ALARMAS:
+<img width="1910" height="892" alt="image" src="https://github.com/user-attachments/assets/0e89b089-b9bc-4cd2-8e1c-c5d49a043b45" />
+
+CLIENTES:
+<img width="1909" height="893" alt="image" src="https://github.com/user-attachments/assets/cf164a60-c93c-41ab-9ed8-93488b7cb438" />
+
+CONFIGURACION:
+<img width="1915" height="901" alt="image" src="https://github.com/user-attachments/assets/70bc4ed0-cf9a-4284-98bb-fdb139f4fbb7" />
+
+REGISTRO DE NUEVA EMPRESA:
+<img width="1330" height="886" alt="image" src="https://github.com/user-attachments/assets/d4c6e56b-32c5-4059-80c1-49051b7eb56f" />
 
