@@ -199,6 +199,22 @@
 
 .loading { display: flex; justify-content: center; padding: 24px; }
 
+/* ── 1366px compact ──────────────────────────────────────────────────────── */
+@media (max-width: 1440px) {
+  .map-page { max-height: calc(100vh - 56px); }
+
+  .map-header {
+    padding-bottom: 10px;
+    .header-left h1 { font-size: 17px; }
+    .header-left p  { font-size: 12px; }
+    .status-indicators { font-size: 12px; gap: 8px; }
+  }
+
+  .passenger-sidebar { width: 250px; }
+
+  .map-layout { gap: 12px; }
+}
+
 /* ── Mobile ──────────────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
   .sidebar-toggle-btn { display: inline-flex; }

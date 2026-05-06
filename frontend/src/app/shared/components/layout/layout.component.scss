@@ -265,11 +265,15 @@
 }
 
 /* ─── Responsive ─────────────────────────────────────────── */
+@media (max-width: 1440px) {
+  .content-area { padding: 18px 24px; }
+}
+
 @media (max-width: 960px) {
-  .content-area { padding: 20px 20px; }
+  .content-area { padding: 16px 20px; }
 }
 
 @media (max-width: 600px) {
-  .content-area { padding: 16px 12px; }
+  .content-area { padding: 14px 12px; }
   .user-chip .user-email { display: none; }
 }

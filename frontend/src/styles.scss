@@ -300,6 +300,26 @@ h1, h2, h3, h4, h5, h6 {
   .liquid-glass-dialog .mat-mdc-dialog-actions { padding: 10px 16px !important; }
 }
 
+/* ─── 1366×768 compact breakpoint ─────────────────────────────────────────── */
+@media (max-width: 1440px) {
+  .mat-mdc-table { border-spacing: 0 4px !important; }
+
+  .mat-mdc-header-cell { padding: 8px 16px !important; }
+
+  .mat-mdc-cell {
+    padding: 11px 16px !important;
+    font-size: 13px !important;
+  }
+
+  .mat-column-acciones { padding-right: 16px !important; }
+
+  .page-header { margin-bottom: 14px; }
+
+  .page-container,
+  .dashboard-container,
+  .list-container { max-width: 100%; }
+}
+
 /* ─── Global Responsive Utilities ─────────────────────────────────────────── */
 
 /* Scrollable table wrapper for mobile */

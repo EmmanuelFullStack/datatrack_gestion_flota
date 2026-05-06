@@ -48,7 +48,7 @@
 
 table {
   width: 100%;
-  
+
   th.mat-mdc-header-cell {
     background: #f8fafc;
     color: #64748b;
@@ -58,6 +58,12 @@ table {
     letter-spacing: 0.5px;
     padding: 16px;
   }
+}
+
+@media (max-width: 1440px) {
+  .page-header { margin-bottom: 18px; }
+
+  table th.mat-mdc-header-cell { padding: 10px 14px; font-size: 12px; }
 }
 
 .unit-info {

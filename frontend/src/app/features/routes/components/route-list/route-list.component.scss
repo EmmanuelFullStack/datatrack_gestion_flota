@@ -164,6 +164,15 @@ mat-paginator {
   padding: 8px 0;
 }
 
+@media (max-width: 1440px) {
+  .page-header { margin-bottom: 18px; }
+
+  table {
+    th.mat-mdc-header-cell { padding: 12px 12px; font-size: 12px; }
+    td.mat-mdc-cell         { padding: 11px 12px; font-size: 13px; }
+  }
+}
+
 @media (max-width: 600px) {
   .page-header {
     flex-direction: column;
