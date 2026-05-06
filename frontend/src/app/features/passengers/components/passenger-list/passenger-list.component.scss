@@ -1,0 +1,14 @@
+.page-container { max-width: 1200px; margin: 0 auto; }
+.page-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px;
+  h1 { display: flex; align-items: center; gap: 8px; margin: 0; font-size: 22px; font-weight: 700; color: #1a237e; }
+  p { margin: 4px 0 0; color: #757575; font-size: 14px; }
+  .header-actions { display: flex; gap: 12px; align-items: center; }
+}
+.filter-bar { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+.search-field { flex: 1; min-width: 200px; }
+.full-width { width: 100%; }
+.loading { display: flex; justify-content: center; padding: 40px; }
+.empty-state { display: flex; flex-direction: column; align-items: center; padding: 60px; color: #bdbdbd;
+  mat-icon { font-size: 64px; height: 64px; width: 64px; margin-bottom: 12px; }
+  p { font-size: 16px; margin-bottom: 16px; }
+}

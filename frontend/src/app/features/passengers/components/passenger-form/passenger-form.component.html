@@ -1,0 +1,61 @@
+<h2 mat-dialog-title>{{ isEdit ? 'Editar Pasajero' : 'Nuevo Pasajero' }}</h2>
+
+<mat-dialog-content>
+  <div *ngIf="loading" class="loading-overlay">
+    <mat-spinner diameter="40"></mat-spinner>
+  </div>
+
+  <form [formGroup]="form" *ngIf="!loading">
+    <div class="form-grid">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Nombre Completo</mat-label>
+        <input matInput formControlName="nombre" placeholder="Nombre y Apellidos">
+        <mat-error *ngIf="form.get('nombre')?.hasError('required')">Requerido</mat-error>
+      </mat-form-field>
+
+      <div class="row-fields" style="display: flex; gap: 16px; margin-bottom: 8px;">
+        <mat-form-field appearance="outline" style="flex: 1;">
+          <mat-label>Documento</mat-label>
+          <input matInput formControlName="documento" placeholder="Identificación">
+          <mat-error *ngIf="form.get('documento')?.hasError('required')">Requerido</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" style="flex: 1;">
+          <mat-label>Teléfono</mat-label>
+          <mat-icon matPrefix>phone</mat-icon>
+          <input matInput formControlName="telefono" placeholder="+57 ...">
+        </mat-form-field>
+      </div>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Ruta Asignada</mat-label>
+        <mat-select formControlName="routeId">
+          <mat-option [value]="null">Sin ruta asignada</mat-option>
+          <mat-option *ngFor="let r of routes" [value]="r.id">{{ r.nombre }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <div class="row-fields" style="display: flex; gap: 16px; margin-bottom: 8px;">
+        <mat-form-field appearance="outline" style="flex: 1;">
+          <mat-label>Estado</mat-label>
+          <mat-select formControlName="estado">
+            <mat-option *ngFor="let e of estadoOptions" [value]="e">{{ e }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" style="flex: 1;">
+          <mat-label>ID Dispositivo</mat-label>
+          <input matInput formControlName="deviceIdDatatrack" placeholder="Opcional">
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cancel()">Cancelar</button>
+  <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="saving || form.invalid">
+    <mat-spinner *ngIf="saving" diameter="20" style="display: inline-block; margin-right: 8px;"></mat-spinner>
+    <span>{{ isEdit ? 'Actualizar' : 'Guardar' }}</span>
+  </button>
+</mat-dialog-actions>
