@@ -1,0 +1,54 @@
+<div class="auth-container">
+  <div class="auth-card">
+    <div class="auth-header">
+      <mat-icon class="auth-logo">directions_bus</mat-icon>
+      <h1>DataTrack Transport</h1>
+      <p>Sistema de Gestión de Rutas</p>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="auth-form">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>NIT de la Empresa</mat-label>
+        <mat-icon matPrefix>business</mat-icon>
+        <input matInput formControlName="tenantNit" placeholder="900123456-1" autocomplete="organization">
+        <mat-error *ngIf="form.get('tenantNit')?.hasError('required')">
+          El NIT es requerido
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Correo Electrónico</mat-label>
+        <mat-icon matPrefix>email</mat-icon>
+        <input matInput type="email" formControlName="email" placeholder="admin@empresa.com" autocomplete="email">
+        <mat-error *ngIf="form.get('email')?.hasError('required')">El correo es requerido</mat-error>
+        <mat-error *ngIf="form.get('email')?.hasError('email')">Correo inválido</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Contraseña</mat-label>
+        <mat-icon matPrefix>lock</mat-icon>
+        <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" autocomplete="current-password">
+        <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword">
+          <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        <mat-error *ngIf="form.get('password')?.hasError('required')">La contraseña es requerida</mat-error>
+        <mat-error *ngIf="form.get('password')?.hasError('minlength')">Mínimo 8 caracteres</mat-error>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" type="submit" class="submit-btn" [disabled]="loading || form.invalid">
+        <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
+        <span *ngIf="!loading">Ingresar</span>
+      </button>
+    </form>
+
+    <div class="auth-footer">
+      <p>¿Empresa nueva? <a routerLink="/auth/register">Registrar empresa</a></p>
+      <p style="margin-top: 10px;">
+        <a routerLink="/auth/admin-login" style="color: #f59e0b; font-weight: 600; text-decoration: none;">
+          <mat-icon style="vertical-align: middle; font-size: 18px; margin-right: 4px;">admin_panel_settings</mat-icon>
+          Acceso super admin
+        </a>
+      </p>
+    </div>
+  </div>
+</div>

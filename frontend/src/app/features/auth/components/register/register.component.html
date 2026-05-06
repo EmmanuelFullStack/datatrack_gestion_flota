@@ -1,0 +1,69 @@
+<div class="auth-container">
+  <div class="auth-card">
+    <div class="auth-header">
+      <mat-icon class="auth-logo">directions_bus</mat-icon>
+      <h1>Registrar Empresa</h1>
+      <p>Crea tu cuenta de empresa en DataTrack</p>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="auth-form">
+      <h3 class="section-title">Información de la Empresa</h3>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Nombre de la Empresa</mat-label>
+        <mat-icon matPrefix>business</mat-icon>
+        <input matInput formControlName="empresaNombre" placeholder="Transportes Bogotá S.A.S">
+        <mat-error *ngIf="form.get('empresaNombre')?.hasError('required')">Requerido</mat-error>
+      </mat-form-field>
+
+      <div class="row-fields">
+        <mat-form-field appearance="outline" class="half-width">
+          <mat-label>NIT</mat-label>
+          <input matInput formControlName="empresaNit" placeholder="900123456-1">
+          <mat-error *ngIf="form.get('empresaNit')?.hasError('required')">Requerido</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="half-width">
+          <mat-label>Ciudad</mat-label>
+          <input matInput formControlName="empresaCiudad" placeholder="Bogotá">
+          <mat-error *ngIf="form.get('empresaCiudad')?.hasError('required')">Requerido</mat-error>
+        </mat-form-field>
+      </div>
+
+      <h3 class="section-title">Datos del Administrador</h3>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Nombre Completo</mat-label>
+        <mat-icon matPrefix>person</mat-icon>
+        <input matInput formControlName="nombre" placeholder="Carlos Gómez">
+        <mat-error *ngIf="form.get('nombre')?.hasError('required')">Requerido</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Correo Electrónico</mat-label>
+        <mat-icon matPrefix>email</mat-icon>
+        <input matInput type="email" formControlName="email" placeholder="admin@empresa.com">
+        <mat-error *ngIf="form.get('email')?.hasError('email')">Correo inválido</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Contraseña</mat-label>
+        <mat-icon matPrefix>lock</mat-icon>
+        <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password">
+        <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword">
+          <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        <mat-error *ngIf="form.get('password')?.hasError('minlength')">Mínimo 8 caracteres</mat-error>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" type="submit" class="submit-btn" [disabled]="loading || form.invalid">
+        <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
+        <span *ngIf="!loading">Registrar Empresa</span>
+      </button>
+    </form>
+
+    <div class="auth-footer">
+      <p>¿Ya tiene cuenta? <a routerLink="/auth/login">Ingresar</a></p>
+    </div>
+  </div>
+</div>
