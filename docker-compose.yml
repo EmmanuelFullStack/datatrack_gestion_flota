@@ -1,0 +1,139 @@
+version: '3.9'
+
+services:
+  # ─── PostgreSQL ────────────────────────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: dt_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DB_USERNAME:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-secret123}
+      POSTGRES_DB: ${DB_NAME:-datatrack_transport}
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-postgres}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - dt_network
+
+  # ─── Redis ─────────────────────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: dt_redis
+    restart: unless-stopped
+    command: >
+      sh -c "redis-server $${REDIS_PASSWORD:+--requirepass $$REDIS_PASSWORD}"
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - dt_network
+
+  # ─── DB Migration runner (one-shot) ────────────────────────────────────────
+  migration:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: builder
+    container_name: dt_migration
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USERNAME: ${DB_USERNAME:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-secret123}
+      DB_NAME: ${DB_NAME:-datatrack_transport}
+      DB_SSL: "false"
+    command: >
+      sh -c "npm run migration:run"
+    networks:
+      - dt_network
+
+  # ─── Backend (NestJS) ──────────────────────────────────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: production
+    container_name: dt_backend
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      migration:
+        condition: service_completed_successfully
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      API_PREFIX: api/v1
+      FRONTEND_URL: http://localhost:4200
+
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USERNAME: ${DB_USERNAME:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-secret123}
+      DB_NAME: ${DB_NAME:-datatrack_transport}
+      DB_SSL: "false"
+      DB_SYNCHRONIZE: "false"
+      DB_LOGGING: "false"
+
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-}
+
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET is required}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-24h}
+
+      DATATRACK_BASE_URL: https://api.datatrack.app/api
+      DATATRACK_TOKEN: ${DATATRACK_TOKEN:?DATATRACK_TOKEN is required}
+      DATATRACK_SESSION_TTL: 240
+      DATATRACK_POLL_INTERVAL_MS: 30000
+
+      SUPERADMIN_EMAIL: ${SUPERADMIN_EMAIL:-admin@datatrack.com}
+      SUPERADMIN_PASSWORD: ${SUPERADMIN_PASSWORD:-Admin12345!}
+
+      THROTTLE_TTL: 60
+      THROTTLE_LIMIT: 100
+    ports:
+      - "3000:3000"
+    networks:
+      - dt_network
+
+  # ─── Frontend (Angular + Nginx) ────────────────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      target: production
+    container_name: dt_frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "4200:80"
+    networks:
+      - dt_network
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  dt_network:
+    driver: bridge
