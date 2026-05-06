@@ -1,0 +1,88 @@
+.page-header {
+  margin-bottom: 32px;
+  h1 { font-family: 'Outfit', sans-serif; font-size: 22px; font-weight: 700; color: #1e293b; margin-bottom: 4px; }
+  .subtitle { color: #64748b; font-size: 16px; margin: 0; }
+}
+
+.settings-grid {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 24px;
+}
+
+@media (max-width: 960px) {
+  .settings-grid { grid-template-columns: 1fr; }
+}
+
+.main-card {
+  border-radius: 20px !important;
+  
+  mat-card-header {
+    margin-bottom: 24px;
+    mat-card-title { font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 20px; }
+  }
+
+  mat-card-content { padding-top: 12px; }
+}
+
+.settings-form {
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .settings-form .form-row { grid-template-columns: 1fr; }
+}
+
+.full-width { width: 100%; margin-bottom: 8px; }
+
+.actions {
+  margin-top: 24px;
+  display: flex;
+  justify-content: flex-end;
+
+  .save-btn {
+    height: 48px;
+    padding: 0 32px;
+    border-radius: 12px !important;
+    font-weight: 600;
+    mat-icon { margin-right: 8px; }
+  }
+}
+
+.info-card {
+  border-radius: 20px !important;
+  margin-bottom: 24px;
+
+  mat-card-title { font-family: 'Outfit', sans-serif; font-size: 18px; font-weight: 700; margin-bottom: 16px; }
+  
+  p { color: #64748b; font-size: 14px; line-height: 1.6; margin-bottom: 20px; }
+}
+
+.status-card {
+  .status-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    .status-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fef2f2;
+      color: #ef4444;
+
+      &.active { background: #f0fdf4; color: #22c55e; }
+      mat-icon { font-size: 28px; width: 28px; height: 28px; }
+    }
+
+    .label { font-size: 13px; color: #64748b; text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px; }
+    .value { font-size: 18px; font-weight: 700; color: #1e293b; }
+  }
+}

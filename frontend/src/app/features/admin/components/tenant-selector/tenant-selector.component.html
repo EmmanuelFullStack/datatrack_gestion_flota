@@ -1,0 +1,79 @@
+<div class="selector-page">
+  <div class="top-bar">
+    <div class="brand-mini">
+      <mat-icon>admin_panel_settings</mat-icon>
+      <span>Panel Super Admin</span>
+    </div>
+    <button mat-button class="logout-btn" (click)="logout()">
+      <mat-icon style="margin-right: 8px; font-size: 18px; width: 18px; height: 18px;">logout</mat-icon>
+      Cerrar Sesión
+    </button>
+  </div>
+
+  <div class="content-wrapper">
+    <div class="header">
+      <h1>Seleccionar Empresa</h1>
+      <p>Selecciona una empresa para gestionar su operación</p>
+    </div>
+
+    @if (error) {
+      <div class="error-banner">
+        <mat-icon>error_outline</mat-icon>
+        <span>{{ error }}</span>
+      </div>
+    }
+
+    @if (tenants.length === 0) {
+      <div class="empty-state">
+        <mat-icon>business_off</mat-icon>
+        <h2>Sin empresas</h2>
+        <p>No se han encontrado tenants registrados.</p>
+      </div>
+    } @else {
+      <div class="tenants-grid">
+        @for (tenant of tenants; track tenant.id) {
+          <mat-card class="tenant-card" [class.loading]="loadingId === tenant.id" (click)="select(tenant.id)">
+            <mat-card-content>
+              <div class="tenant-header">
+                <div class="tenant-icon">
+                  <mat-icon>business</mat-icon>
+                </div>
+                <div class="tenant-info">
+                  <h3>{{ tenant.nombre }}</h3>
+                  <span class="nit">NIT: {{ tenant.nit }}</span>
+                </div>
+              </div>
+
+              <div class="estado-badge">
+                <span class="estado-chip" [class.activo]="tenant.estado === 'ACTIVO'">
+                  {{ tenant.estado }}
+                </span>
+                <div class="location">
+                  <mat-icon>location_on</mat-icon>
+                  <span>{{ tenant.ciudad }}</span>
+                </div>
+              </div>
+
+              <button
+                mat-flat-button
+                class="select-btn"
+                (click)="$event.stopPropagation(); select(tenant.id)"
+                [disabled]="!!loadingId"
+              >
+                <div class="btn-content">
+                  @if (loadingId === tenant.id) {
+                    <mat-spinner diameter="18" />
+                    <span>Iniciando...</span>
+                  } @else {
+                    <mat-icon style="font-size: 18px; width: 18px; height: 18px;">login</mat-icon>
+                    <span>Entrar</span>
+                  }
+                </div>
+              </button>
+            </mat-card-content>
+          </mat-card>
+        }
+      </div>
+    }
+  </div>
+</div>

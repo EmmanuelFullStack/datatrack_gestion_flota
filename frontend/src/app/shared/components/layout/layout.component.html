@@ -1,0 +1,82 @@
+<mat-sidenav-container class="app-container">
+  <mat-sidenav
+    #sidenav
+    [mode]="isMobile ? 'over' : 'side'"
+    [opened]="isMobile ? false : isExpanded"
+    class="app-sidenav"
+    [class.collapsed]="!isExpanded && !isMobile">
+
+    <div class="sidenav-header">
+      <div class="brand">
+        <div class="brand-logo-container">
+          <img *ngIf="currentUser?.tenantLogo" [src]="currentUser?.tenantLogo" class="tenant-logo" alt="Logo">
+          <mat-icon *ngIf="!currentUser?.tenantLogo" class="brand-icon">directions_bus</mat-icon>
+        </div>
+        <span class="brand-name" *ngIf="isExpanded || isMobile">DataTrack</span>
+      </div>
+      <div class="tenant-info" *ngIf="currentUser && (isExpanded || isMobile)">
+        <small class="tenant-name">{{ currentUser.tenantNombre }}</small>
+        @if (isSuperAdmin) {
+          <span class="super-admin-badge">Super Admin</span>
+        }
+      </div>
+    </div>
+
+    <mat-nav-list class="nav-list">
+      <a mat-list-item
+         *ngFor="let item of navItems"
+         [routerLink]="item.route"
+         routerLinkActive="active-link"
+         [routerLinkActiveOptions]="{ exact: item.route === '/dashboard' || item.route === '/passengers' }"
+         (click)="onNavClick()">
+        <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+        <span matListItemTitle *ngIf="isExpanded || isMobile">{{ item.label }}</span>
+      </a>
+    </mat-nav-list>
+
+    <div class="sidenav-footer" *ngIf="currentUser">
+      <div class="user-info" *ngIf="isExpanded || isMobile">
+        <mat-icon>account_circle</mat-icon>
+        <div class="user-details">
+          <span class="user-name">{{ currentUser.nombre }}</span>
+          <span class="user-role">{{ currentUser.role | titlecase }}</span>
+        </div>
+      </div>
+      @if (isSuperAdmin) {
+        <button mat-icon-button (click)="switchTenant()" matTooltip="Cambiar empresa" class="switch-btn">
+          <mat-icon>swap_horiz</mat-icon>
+        </button>
+      }
+      <button mat-icon-button (click)="logout()" matTooltip="Cerrar sesión" color="warn">
+        <mat-icon>logout</mat-icon>
+      </button>
+    </div>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="app-content">
+    <mat-toolbar class="app-toolbar" color="primary">
+      <button mat-icon-button (click)="toggleSidenav()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span class="toolbar-spacer"></span>
+      @if (isSuperAdmin && currentUser?.tenantNombre) {
+        <div class="super-admin-indicator">
+          <mat-icon>admin_panel_settings</mat-icon>
+          <span>{{ currentUser?.tenantNombre }}</span>
+          <button mat-stroked-button (click)="switchTenant()" class="switch-tenant-btn">
+            <mat-icon>swap_horiz</mat-icon>
+            Cambiar
+          </button>
+        </div>
+      }
+      <span *ngIf="currentUser" class="user-chip">
+        <mat-icon>person</mat-icon>
+        <span class="user-email">{{ currentUser.email }}</span>
+      </span>
+    </mat-toolbar>
+
+    <div class="content-area">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

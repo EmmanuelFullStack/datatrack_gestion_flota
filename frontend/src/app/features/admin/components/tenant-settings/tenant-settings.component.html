@@ -1,0 +1,91 @@
+<div class="page-container animate-fade-in">
+  <div class="page-header">
+    <h1>Configuración de Empresa</h1>
+    <p class="subtitle">Gestiona la información y ajustes de tu organización</p>
+  </div>
+
+  <div class="settings-grid">
+    <mat-card class="main-card">
+      <mat-card-header>
+        <mat-card-title>Perfil de la Organización</mat-card-title>
+        <mat-card-subtitle>Información básica y visual de la empresa</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" class="settings-form">
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Nombre de la Empresa</mat-label>
+              <input matInput formControlName="nombre" placeholder="Ej. Transportes del Norte">
+              <mat-error *ngIf="form.get('nombre')?.hasError('required')">El nombre es obligatorio</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>NIT (No editable)</mat-label>
+              <input matInput formControlName="nit">
+              <mat-icon matPrefix>badge</mat-icon>
+            </mat-form-field>
+          </div>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Ciudad de Operación</mat-label>
+              <input matInput formControlName="ciudad" placeholder="Ej. Bogotá">
+              <mat-icon matPrefix>location_on</mat-icon>
+              <mat-error *ngIf="form.get('ciudad')?.hasError('required')">La ciudad es obligatoria</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Plan de Suscripción</mat-label>
+              <mat-select formControlName="planSuscripcion">
+                <mat-option value="BASICO">Básico</mat-option>
+                <mat-option value="PROFESIONAL">Profesional</mat-option>
+                <mat-option value="ENTERPRISE">Enterprise (Corporativo)</mat-option>
+              </mat-select>
+              <mat-icon matPrefix>star</mat-icon>
+            </mat-form-field>
+          </div>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>URL del Logo (Opcional)</mat-label>
+            <input matInput formControlName="logoUrl" placeholder="https://ejemplo.com/logo.png">
+            <mat-icon matPrefix>image</mat-icon>
+          </mat-form-field>
+
+          <div class="actions">
+            <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid || loading" class="save-btn">
+              <mat-icon *ngIf="!loading">save</mat-icon>
+              {{ loading ? 'Guardando cambios...' : 'Guardar Configuración' }}
+            </button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+
+    <div class="side-info">
+      <mat-card class="info-card status-card">
+        <mat-card-content>
+          <div class="status-header">
+            <div class="status-icon" [class.active]="tenant?.estado === 'ACTIVO'">
+              <mat-icon>{{ tenant?.estado === 'ACTIVO' ? 'check_circle' : 'pause_circle' }}</mat-icon>
+            </div>
+            <div>
+              <div class="label">Estado de la cuenta</div>
+              <div class="value">{{ tenant?.estado }}</div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="info-card">
+        <mat-card-header>
+          <mat-card-title>Ayuda</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>Para cambios en el NIT o desvincular la cuenta, por favor contacta al soporte técnico de DataTrack.</p>
+          <button mat-stroked-button class="full-width">Ver documentación</button>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>
