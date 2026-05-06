@@ -134,16 +134,25 @@ export class RouteFormComponent implements OnInit, AfterViewInit, OnDestroy {
           next: (r) => {
             this.form.patchValue(r);
             this.loading = false;
-            if (r.paradas && r.paradas.length > 0) this.pendingParadas = r.paradas;
+            if (r.paradas && r.paradas.length > 0) {
+              // Initialize map after data is ready so there's no race condition
+              this.pendingParadas = r.paradas;
+              requestAnimationFrame(() => this.initMap());
+            } else {
+              requestAnimationFrame(() => this.initMap());
+            }
           },
-          error: () => { this.loading = false; },
+          error: () => { this.loading = false; requestAnimationFrame(() => this.initMap()); },
         });
     }
   }
 
   ngAfterViewInit(): void {
-    // Use requestAnimationFrame so the dialog container has finished painting
-    requestAnimationFrame(() => this.initMap());
+    // In edit mode, wait for data to load before initializing the map
+    // to avoid the race condition where initMap runs before HTTP completes
+    if (!this.isEdit) {
+      requestAnimationFrame(() => this.initMap());
+    }
   }
 
   private initMap(): void {
