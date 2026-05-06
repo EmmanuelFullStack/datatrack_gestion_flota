@@ -1,0 +1,302 @@
+:root {
+  --primary-color: #4f46e5;
+  --primary-hover: #4338ca;
+  --bg-color: #eef2ff; /* Azulito rey (Pale Indigo/Royal Blue wash) */
+  --surface-color: #ffffff;
+  --text-main: #111827;
+  --text-muted: #6b7280;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --transition: all 0.2s ease-in-out;
+}
+
+/* Material theme is loaded via angular.json styles array — no @import needed here */
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background: var(--bg-color);
+  color: var(--text-main);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  scroll-behavior: smooth;
+}
+
+/* Contenedores de páginas internas */
+.page-container,
+.dashboard-container,
+.list-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.page-header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+
+  h1 {
+    margin: 0;
+    font-size: clamp(18px, 2.5vw, 24px);
+    font-weight: 700;
+    color: #1a237e;
+  }
+}
+
+@media (max-width: 600px) {
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Outfit', sans-serif !important;
+  letter-spacing: -0.02em;
+}
+
+/* Material Global Overrides for Senior Look */
+.mat-mdc-card {
+  border-radius: var(--radius-lg) !important;
+  box-shadow: var(--shadow-md) !important;
+  background: var(--surface-color) !important;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  transition: var(--transition);
+}
+
+.mat-mdc-card:hover {
+  box-shadow: var(--shadow-lg) !important;
+  transform: translateY(-2px);
+}
+
+.mat-mdc-button, .mat-mdc-raised-button, .mat-mdc-outlined-button {
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 500 !important;
+  border-radius: 8px !important;
+  letter-spacing: 0.3px !important;
+  transition: var(--transition) !important;
+}
+
+.mat-mdc-raised-button {
+  box-shadow: 0 4px 10px rgba(79, 70, 229, 0.2) !important;
+}
+
+.mat-mdc-raised-button:hover:not([disabled]) {
+  transform: translateY(-1px) scale(1.02);
+  box-shadow: 0 6px 14px rgba(79, 70, 229, 0.3) !important;
+}
+
+/* Form Fields Clean Look */
+.mat-mdc-form-field-has-icon-prefix .mat-mdc-text-field-wrapper {
+  background-color: rgba(255,255,255,0.7) !important;
+  border-radius: var(--radius-md) !important;
+}
+
+.mat-mdc-form-field-wrapper {
+  transition: var(--transition) !important;
+}
+
+/* Base animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Snackbar */
+.error-snack .mat-mdc-snack-bar-container {
+  background: #ef4444 !important;
+  color: white !important;
+  border-radius: 8px !important;
+  box-shadow: 0 10px 15px -3px rgba(239, 68, 68, 0.3) !important;
+}
+
+/* Modern Tables Overhaul */
+.mat-mdc-table {
+  background: transparent !important;
+  border-collapse: separate !important;
+  border-spacing: 0 8px !important;
+}
+
+.mat-mdc-header-row {
+  background: transparent !important;
+  height: auto !important;
+}
+
+.mat-mdc-header-cell {
+  border-bottom: none !important;
+  color: var(--text-muted) !important;
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 600 !important;
+  text-transform: uppercase;
+  font-size: 12px !important;
+  letter-spacing: 0.05em;
+  padding: 12px 24px !important;
+}
+
+.mat-mdc-row {
+  background-color: #ffffff !important;
+  border-radius: var(--radius-md) !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.02) !important;
+}
+
+.mat-mdc-row:hover {
+  background-color: rgba(79, 70, 229, 0.04) !important;
+  transform: translateY(-1px) scale(1.002);
+  box-shadow: var(--shadow-sm) !important;
+}
+
+.mat-mdc-cell {
+  border-bottom: none !important;
+  padding: 16px 24px !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 14px !important;
+  color: #374151 !important;
+}
+
+.mat-mdc-cell strong {
+  color: #111827;
+  font-weight: 600;
+}
+
+.mat-column-acciones {
+  width: auto;
+  min-width: 140px;
+  text-align: right;
+  padding-right: 24px !important;
+  white-space: nowrap !important; /* Previene que los botones bajen a otra línea */
+}
+
+/* Rounded Ends for Rows since border-spacing separates them */
+.mat-mdc-cell:first-child { border-top-left-radius: var(--radius-md); border-bottom-left-radius: var(--radius-md); }
+.mat-mdc-cell:last-child { border-top-right-radius: var(--radius-md); border-bottom-right-radius: var(--radius-md); }
+
+/* Action Buttons Elevation and Resizing */
+.mat-column-acciones .mat-mdc-icon-button {
+  width: 34px !important;
+  height: 34px !important;
+  padding: 5px !important;
+  margin-left: 6px;
+  transition: all 0.2s ease !important;
+  opacity: 0.7;
+}
+
+/* Redimensionar el ícono interior para que no se desborde */
+.mat-column-acciones .mat-mdc-icon-button .mat-icon {
+  font-size: 20px !important;
+  width: 20px !important;
+  height: 20px !important;
+  line-height: 20px !important;
+}
+
+.mat-mdc-row:hover .mat-column-acciones .mat-mdc-icon-button {
+  opacity: 1;
+}
+
+.mat-column-acciones .mat-mdc-icon-button:hover {
+  transform: scale(1.1);
+  background: rgba(79, 70, 229, 0.1) !important;
+}
+
+.mat-column-acciones .mat-mdc-icon-button[color="warn"]:hover {
+  background: rgba(239, 68, 68, 0.1) !important;
+}
+
+/* Premium Status Chips */
+.mat-mdc-chip {
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 600 !important;
+  font-size: 12px !important;
+  letter-spacing: 0.03em !important;
+  padding: 0 12px !important;
+  border-radius: 6px !important;
+  box-shadow: none !important;
+}
+
+/* Si Angular usa [color]="primary" generará clases como mat-primary. Ajustamos las genéricas */
+.mat-mdc-standard-chip.mat-primary {
+  background-color: rgba(79, 70, 229, 0.1) !important;
+  color: #4f46e5 !important;
+}
+
+.mat-mdc-standard-chip.mat-warn {
+  background-color: rgba(239, 68, 68, 0.1) !important;
+  color: #ef4444 !important;
+}
+
+.mat-mdc-standard-chip.mat-accent {
+  background-color: rgba(16, 185, 129, 0.1) !important; /* Emerald green for OK/Accent */
+  color: #059669 !important;
+}
+
+/* Liquid Glass Dialog */
+.liquid-glass-dialog {
+  .mat-mdc-dialog-container {
+    --mdc-dialog-container-color: transparent !important;
+    --mdc-dialog-container-elevation: 0;
+  }
+
+  .mat-mdc-dialog-surface {
+    display: flex !important;
+    flex-direction: column !important;
+    max-height: min(90vh, 90dvh) !important;
+    background: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.05) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+    overflow: hidden !important;
+  }
+
+  .mat-mdc-dialog-title {
+    flex-shrink: 0;
+    padding: 20px 24px 12px !important;
+    margin: 0 !important;
+    font-family: 'Outfit', sans-serif !important;
+    font-weight: 700 !important;
+    color: var(--text-main) !important;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+  }
+
+  .mat-mdc-dialog-content {
+    flex: 1 1 auto !important;
+    overflow-y: auto !important;
+    padding: 20px 24px !important;
+    max-height: none !important;
+  }
+
+  .mat-mdc-dialog-actions {
+    flex-shrink: 0;
+    padding: 12px 24px !important;
+    gap: 10px;
+    justify-content: flex-end;
+    border-top: 1px solid rgba(0,0,0,0.06);
+    background: #fafafa;
+  }
+}
+
+@media (max-width: 600px) {
+  .liquid-glass-dialog .mat-mdc-dialog-surface {
+    max-height: min(95vh, 95dvh) !important;
+    border-radius: 16px !important;
+  }
+  .liquid-glass-dialog .mat-mdc-dialog-title { padding: 16px 16px 10px !important; }
+  .liquid-glass-dialog .mat-mdc-dialog-content { padding: 12px 16px !important; }
+  .liquid-glass-dialog .mat-mdc-dialog-actions { padding: 10px 16px !important; }
+}
+
