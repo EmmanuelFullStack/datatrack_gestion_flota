@@ -57,7 +57,7 @@ src/modules/<module>/
 | Capa           | Tecnología                      |
 | -------------- | ------------------------------- |
 | Backend        | NestJS, TypeScript, TypeORM     |
-| Base de Datos  | PostgreSQL 16                   |
+| Base de Datos  | PostgreSQL                    |
 | Caché/Sesiones | Redis + ioredis                 |
 | Autenticación  | JWT + Passport.js               |
 | WebSockets     | Socket.IO                       |
