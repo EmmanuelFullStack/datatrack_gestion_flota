@@ -1,0 +1,89 @@
+<h2 mat-dialog-title>{{ isEdit ? 'Editar Ruta' : 'Nueva Ruta' }}</h2>
+
+<mat-dialog-content>
+  <div *ngIf="loading" class="loading-overlay">
+    <mat-spinner diameter="40"></mat-spinner>
+  </div>
+
+  <form [formGroup]="form" *ngIf="!loading">
+    <div class="form-grid">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Nombre de la Ruta</mat-label>
+        <input matInput formControlName="nombre" placeholder="Nombre descriptivo de la ruta">
+        <mat-error *ngIf="form.get('nombre')?.hasError('required')">Requerido</mat-error>
+      </mat-form-field>
+
+      <div class="map-section" style="margin-bottom: 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <p style="font-size: 13px; color: #666; margin: 0;">
+            <span *ngIf="!routeFinalized">Haz clic para añadir puntos. </span>
+            <span *ngIf="routeFinalized" style="color: #10b981; font-weight: 600;">Ruta Finalizada ✓</span>
+          </p>
+          <div style="display: flex; gap: 8px;">
+            <button mat-stroked-button color="warn" (click)="resetMarkers()" type="button" *ngIf="markers.length > 0">
+              <mat-icon>refresh</mat-icon> Reiniciar
+            </button>
+            <button mat-raised-button color="accent" (click)="finalizeRoute()" type="button" 
+                    *ngIf="markers.length >= 2 && !routeFinalized" [disabled]="calculatingRoute">
+              <mat-icon>flag</mat-icon> Es el Último Destino
+            </button>
+          </div>
+        </div>
+        
+        <div class="map-wrapper">
+          <div *ngIf="calculatingRoute" class="map-loading-overlay">
+            <mat-spinner diameter="35"></mat-spinner>
+            <span>Calculando ruta con Dijkstra...</span>
+          </div>
+          <div #routeMap class="route-map-canvas"
+               [style.border]="'1px solid ' + (routeFinalized ? '#10b981' : '#e0e0e0')"
+               style="z-index: 1;"></div>
+        </div>
+      </div>
+
+      <div class="row-fields" style="display: flex; gap: 16px; margin-bottom: 8px;">
+        <mat-form-field appearance="outline" style="flex: 1;">
+          <mat-label>Origen</mat-label>
+          <mat-icon matPrefix>home</mat-icon>
+          <input matInput formControlName="origen" readonly>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" style="flex: 1;">
+          <mat-label>Último Destino</mat-label>
+          <mat-icon matPrefix>flag</mat-icon>
+          <input matInput formControlName="destino" readonly>
+        </mat-form-field>
+      </div>
+
+      <div class="row-fields" style="display: flex; gap: 16px; margin-bottom: 8px;">
+        <mat-form-field appearance="outline" style="flex: 1;">
+          <mat-label>Longitud Ruta (km)</mat-label>
+          <mat-icon matPrefix>route</mat-icon>
+          <input matInput type="number" formControlName="distanciaKm" readonly>
+          <span matSuffix style="font-weight: 600; font-size: 11px; margin-right: 8px;">KM</span>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" style="flex: 1;">
+          <mat-label>Capacidad Máxima</mat-label>
+          <input matInput type="number" formControlName="capacidadMaxima">
+        </mat-form-field>
+      </div>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Estado de Operación</mat-label>
+        <mat-select formControlName="estado">
+          <mat-option *ngFor="let e of estadoOptions" [value]="e">{{ e }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cancel()">Cancelar</button>
+  <button mat-raised-button color="primary" (click)="onSubmit()" 
+          [disabled]="saving || form.invalid || calculatingRoute || !routeFinalized">
+    <mat-spinner *ngIf="saving" diameter="20" style="display: inline-block; margin-right: 8px;"></mat-spinner>
+    <span>{{ isEdit ? 'Actualizar' : 'Crear Ruta' }}</span>
+  </button>
+</mat-dialog-actions>

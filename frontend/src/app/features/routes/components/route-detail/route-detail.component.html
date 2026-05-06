@@ -1,0 +1,68 @@
+<div class="page-container" *ngIf="!loading && route">
+  <div class="page-header">
+    <button mat-icon-button routerLink="/routes"><mat-icon>arrow_back</mat-icon></button>
+    <div class="header-info">
+      <h1>{{ route.nombre }}</h1>
+      <mat-chip [color]="route.estado === 'ACTIVA' ? 'primary' : 'warn'" selected>{{ route.estado }}</mat-chip>
+    </div>
+    <span class="spacer"></span>
+    <button mat-stroked-button [routerLink]="['/routes', route.id, 'edit']"><mat-icon>edit</mat-icon> Editar</button>
+    <button mat-raised-button color="accent" (click)="createLocator()" [disabled]="creatingLocator">
+      <mat-icon>gps_fixed</mat-icon> Crear Locator GPS
+    </button>
+  </div>
+
+  <!-- Route Info -->
+  <div class="info-grid">
+    <mat-card>
+      <mat-card-content>
+        <div class="info-item"><mat-icon>place</mat-icon><div><label>Origen</label><span>{{ route.origen }}</span></div></div>
+        <div class="info-item"><mat-icon>flag</mat-icon><div><label>Destino</label><span>{{ route.destino }}</span></div></div>
+        <div class="info-item"><mat-icon>straighten</mat-icon><div><label>Distancia</label><span>{{ route.distanciaKm ?? 'N/A' }} km</span></div></div>
+        <div class="info-item"><mat-icon>groups</mat-icon><div><label>Capacidad</label><span>{{ passengers.length }} / {{ route.capacidadMaxima }}</span></div></div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card *ngIf="locatorUrl" class="locator-card">
+      <mat-card-content>
+        <h3><mat-icon>link</mat-icon> Locator GPS Activo</h3>
+        <a [href]="locatorUrl" target="_blank" mat-raised-button color="primary">
+          <mat-icon>open_in_new</mat-icon> Abrir Mapa en Tiempo Real
+        </a>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Passengers Table -->
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title><mat-icon>people</mat-icon> Pasajeros Asignados ({{ passengers.length }})</mat-card-title>
+      <span class="spacer"></span>
+      <button mat-stroked-button routerLink="/passengers/new"><mat-icon>person_add</mat-icon> Agregar Pasajero</button>
+    </mat-card-header>
+    <mat-card-content>
+      <table mat-table [dataSource]="passengers" class="full-width">
+        <ng-container matColumnDef="nombre"><th mat-header-cell *matHeaderCellDef>Nombre</th><td mat-cell *matCellDef="let p">{{ p.nombre }}</td></ng-container>
+        <ng-container matColumnDef="documento"><th mat-header-cell *matHeaderCellDef>Documento</th><td mat-cell *matCellDef="let p">{{ p.documento }}</td></ng-container>
+        <ng-container matColumnDef="estado"><th mat-header-cell *matHeaderCellDef>Estado</th>
+          <td mat-cell *matCellDef="let p"><mat-chip selected>{{ p.estado }}</mat-chip></td></ng-container>
+        <ng-container matColumnDef="gps"><th mat-header-cell *matHeaderCellDef>GPS</th>
+          <td mat-cell *matCellDef="let p">
+            <mat-icon [color]="p.lat ? 'primary' : ''" [matTooltip]="p.lat ? 'Lat: ' + p.lat + ', Lon: ' + p.lon : 'Sin GPS'">
+              {{ p.lat ? 'gps_fixed' : 'gps_off' }}
+            </mat-icon>
+          </td></ng-container>
+        <ng-container matColumnDef="acciones"><th mat-header-cell *matHeaderCellDef>Acciones</th>
+          <td mat-cell *matCellDef="let p">
+            <button mat-icon-button color="warn" matTooltip="Desasignar" (click)="unassignPassenger(p)"><mat-icon>person_remove</mat-icon></button>
+          </td></ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+      <div *ngIf="passengers.length === 0" class="empty-state">
+        <mat-icon>people_outline</mat-icon><p>No hay pasajeros asignados a esta ruta</p>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+<div *ngIf="loading" class="loading"><mat-spinner diameter="40"></mat-spinner></div>

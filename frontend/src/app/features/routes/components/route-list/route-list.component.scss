@@ -1,0 +1,164 @@
+.page-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+
+  .premium-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0;
+    font-size: 22px;
+    font-weight: 700;
+    color: #1a237e;
+    letter-spacing: -0.5px;
+
+    mat-icon {
+      font-size: 24px;
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  .premium-subtitle {
+    margin: 4px 0 0;
+    color: #5c6bc0;
+    font-size: 15px;
+    font-weight: 500;
+  }
+}
+
+.premium-card {
+  border-radius: 20px;
+  border: none;
+  overflow: hidden;
+}
+
+.legacy-glass {
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+}
+
+.table-container {
+  position: relative;
+  min-height: 200px;
+
+  &.loading {
+    opacity: 0.6;
+  }
+}
+
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.6);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+table {
+  width: 100%;
+  background: transparent;
+
+  th.mat-mdc-header-cell {
+    font-weight: 700;
+    color: #1a237e;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 20px 16px;
+    background: #f8f9ff;
+  }
+
+  td.mat-mdc-cell {
+    padding: 16px;
+    color: #37474f;
+    font-size: 14px;
+    border-bottom: 1px solid #f0f2f7;
+  }
+}
+
+.route-info {
+  .route-name {
+    font-weight: 700;
+    color: #1a237e;
+    display: block;
+    font-size: 15px;
+  }
+}
+
+.coord-label {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 12px;
+  color: #546e7a;
+  background: #f0f2f7;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+.status-badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+
+  &.activa {
+    background: #e3f2fd;
+    color: #1565c0;
+  }
+  &.en_servicio {
+    background: #e8f5e9;
+    color: #2e7d32;
+  }
+  &.inactiva {
+    background: #ffebee;
+    color: #c62828;
+  }
+}
+
+.action-buttons {
+  opacity: 0.8;
+  transition: opacity 0.2s;
+  &:hover { opacity: 1; }
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 80px 0;
+  color: #90a4ae;
+
+  mat-icon {
+    font-size: 64px;
+    width: 64px;
+    height: 64px;
+    margin-bottom: 24px;
+    opacity: 0.4;
+  }
+
+  p {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 24px;
+  }
+}
+
+mat-paginator {
+  background: transparent;
+  border-top: 1px solid #f0f2f7;
+  padding: 8px 0;
+}
