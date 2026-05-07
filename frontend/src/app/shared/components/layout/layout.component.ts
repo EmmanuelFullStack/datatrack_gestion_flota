@@ -5,6 +5,7 @@ import { CommonModule, TitleCasePipe } from '@angular/common';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Subject, takeUntil } from 'rxjs';
 import { AuthService } from '../../../core/services/auth.service';
+import { WebsocketService } from '../../../core/services/websocket.service';
 import { User } from '../../../core/models/models';
 
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
@@ -41,6 +42,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
   @ViewChild('sidenav') sidenav!: MatSidenav;
 
   private authService = inject(AuthService);
+  private wsService = inject(WebsocketService);
   private router = inject(Router);
   private breakpointObserver = inject(BreakpointObserver);
   private destroy$ = new Subject<void>();
@@ -61,6 +63,9 @@ export class LayoutComponent implements OnInit, OnDestroy {
   ];
 
   ngOnInit(): void {
+    // Establish WebSocket connection once the user is authenticated
+    this.wsService.connect();
+
     this.authService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((u) => {
       this.currentUser = u;
       this.isSuperAdmin = u?.role === 'SUPER_ADMIN';
@@ -98,5 +103,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+    this.wsService.disconnect();
   }
 }

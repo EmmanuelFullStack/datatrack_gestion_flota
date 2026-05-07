@@ -105,12 +105,18 @@ export class PassengerMapComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit(): void {
     this.loadPassengers();
 
+    // Track real socket connection state
+    this.wsService.connected
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((connected) => {
+        this.ngZone.run(() => { this.wsConnected = connected; });
+      });
+
     this.wsService.gpsUpdates
       .pipe(takeUntil(this.destroy$))
       .subscribe((events: GpsUpdateEvent[]) => {
         this.ngZone.run(() => {
-          this.lastUpdate  = new Date();
-          this.wsConnected = true;
+          this.lastUpdate = new Date();
           events.forEach((e) => this.processGpsUpdate(e));
           this.applyFilters();
         });
