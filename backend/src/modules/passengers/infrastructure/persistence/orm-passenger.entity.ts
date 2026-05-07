@@ -40,6 +40,9 @@ export class OrmPassenger {
   @Column({ type: 'varchar', name: 'device_id_datatrack', length: 100, nullable: true })
   deviceIdDatatrack: string | null;
 
+  @Column({ type: 'varchar', name: 'device_name_datatrack', length: 255, nullable: true })
+  deviceNameDatatrack: string | null;
+
   @Column({ type: 'timestamptz', name: 'ultimo_gps_update', nullable: true })
   ultimoGpsUpdate: Date | null;
 

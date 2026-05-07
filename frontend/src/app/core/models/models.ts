@@ -69,6 +69,7 @@ export interface Passenger {
   lat: number | null;
   lon: number | null;
   deviceIdDatatrack: string | null;
+  deviceNameDatatrack: string | null;
   ultimoGpsUpdate: string | null;
   routeId: string | null;
   tenantId: string;
@@ -88,6 +89,7 @@ export interface Client {
 
 export interface GpsUpdateEvent {
   passengerId: string;
+  deviceName?: string;
   lat: number;
   lon: number;
   speed: number;

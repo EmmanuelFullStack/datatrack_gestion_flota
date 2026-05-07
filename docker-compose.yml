@@ -125,6 +125,9 @@ services:
     restart: unless-stopped
     depends_on:
       - backend
+    environment:
+      # Nginx uses this to proxy /api/ and /socket.io/ to the backend container
+      BACKEND_URL: http://backend:3000
     ports:
       - "4200:80"
     networks:

@@ -32,6 +32,7 @@ export class CreatePassengerUseCase {
       documento: dto.documento,
       telefono: dto.telefono,
       deviceIdDatatrack: dto.deviceIdDatatrack,
+      deviceNameDatatrack: dto.deviceNameDatatrack,
       routeId: dto.routeId ?? null,
       estado: dto.estado,
       tenantId,

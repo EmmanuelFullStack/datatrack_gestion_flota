@@ -15,7 +15,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { Subject, switchMap, of, takeUntil } from 'rxjs';
 import { PassengersService } from '../../../../core/services/passengers.service';
 import { RoutesService } from '../../../../core/services/routes.service';
+import { DatatrackService, DatatrackUnit } from '../../../../core/services/datatrack.service';
 import { Route } from '../../../../core/models/models';
+import { MatSelectChange } from '@angular/material/select';
 
 interface PassengerFormDialogData {
   id: string | null;
@@ -48,6 +50,7 @@ export class PassengerFormComponent implements OnInit, OnDestroy {
   private readonly fb               = inject(FormBuilder);
   private readonly passengersService = inject(PassengersService);
   private readonly routesService    = inject(RoutesService);
+  private readonly datatrkService   = inject(DatatrackService);
   private readonly snackBar         = inject(MatSnackBar);
   private readonly dialogRef        = inject(MatDialogRef<PassengerFormComponent>);
   public  readonly data             = inject<PassengerFormDialogData>(MAT_DIALOG_DATA);
@@ -55,9 +58,11 @@ export class PassengerFormComponent implements OnInit, OnDestroy {
   form: FormGroup;
   isEdit      = false;
   passengerId: string | null = null;
-  loading = false;
-  saving  = false;
-  routes: Route[] = [];
+  loading      = false;
+  saving       = false;
+  loadingUnits = false;
+  routes: Route[]          = [];
+  units:  DatatrackUnit[]  = [];
 
   private originalRouteId: string | null = null;
 
@@ -65,12 +70,13 @@ export class PassengerFormComponent implements OnInit, OnDestroy {
 
   constructor() {
     this.form = this.fb.group({
-      nombre:           ['', [Validators.required, Validators.maxLength(255)]],
-      documento:        ['', [Validators.required, Validators.maxLength(50)]],
-      telefono:         ['', [Validators.maxLength(30)]],
-      deviceIdDatatrack:['', [Validators.maxLength(100)]],
-      routeId:          [null],
-      estado:           ['PENDIENTE'],
+      nombre:              ['', [Validators.required, Validators.maxLength(255)]],
+      documento:           ['', [Validators.required, Validators.maxLength(50)]],
+      telefono:            ['', [Validators.maxLength(30)]],
+      deviceIdDatatrack:   [null],
+      deviceNameDatatrack: [null],
+      routeId:             [null],
+      estado:              ['PENDIENTE'],
     });
   }
 
@@ -81,6 +87,14 @@ export class PassengerFormComponent implements OnInit, OnDestroy {
     this.routesService.getActive()
       .pipe(takeUntil(this.destroy$))
       .subscribe((r) => (this.routes = r));
+
+    this.loadingUnits = true;
+    this.datatrkService.getUnits()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (units) => { this.units = units; this.loadingUnits = false; },
+        error: ()      => { this.loadingUnits = false; },
+      });
 
     if (this.isEdit && this.passengerId) {
       this.loading = true;
@@ -98,14 +112,20 @@ export class PassengerFormComponent implements OnInit, OnDestroy {
     }
   }
 
+  onUnitSelected(event: MatSelectChange): void {
+    const unit = this.units.find((u) => String(u.id) === event.value);
+    this.form.patchValue({ deviceNameDatatrack: unit?.name ?? null });
+  }
+
   onSubmit(): void {
     if (this.form.invalid || this.saving) return;
     this.saving = true;
 
-    const { nombre, documento, telefono, estado, deviceIdDatatrack, routeId } = this.form.value as {
+    const { nombre, documento, telefono, estado, deviceIdDatatrack, deviceNameDatatrack, routeId } = this.form.value as {
       nombre: string; documento: string; telefono: string;
       estado: 'PENDIENTE' | 'EMBARCADO' | 'EN_TRANSITO' | 'LLEGO';
-      deviceIdDatatrack: string; routeId: string | null;
+      deviceIdDatatrack: string | null; deviceNameDatatrack: string | null;
+      routeId: string | null;
     };
 
     if (!this.isEdit || !this.passengerId) {
@@ -123,7 +143,7 @@ export class PassengerFormComponent implements OnInit, OnDestroy {
     }
 
     this.passengersService
-      .update(this.passengerId, { nombre, documento, telefono, estado, deviceIdDatatrack })
+      .update(this.passengerId, { nombre, documento, telefono, estado, deviceIdDatatrack, deviceNameDatatrack })
       .pipe(
         switchMap(() => {
           const newRouteId: string | null = routeId || null;

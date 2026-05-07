@@ -23,6 +23,7 @@ export class PassengerRepository implements PassengerRepositoryPort {
       lat: orm.lat ? Number(orm.lat) : null,
       lon: orm.lon ? Number(orm.lon) : null,
       deviceIdDatatrack: orm.deviceIdDatatrack,
+      deviceNameDatatrack: orm.deviceNameDatatrack,
       ultimoGpsUpdate: orm.ultimoGpsUpdate,
       routeId: orm.routeId,
       tenantId: orm.tenantId,
@@ -93,6 +94,7 @@ export class PassengerRepository implements PassengerRepositoryPort {
       lat: passenger.lat,
       lon: passenger.lon,
       deviceIdDatatrack: passenger.deviceIdDatatrack,
+      deviceNameDatatrack: passenger.deviceNameDatatrack,
       ultimoGpsUpdate: passenger.ultimoGpsUpdate,
       routeId: passenger.routeId,
       tenantId: passenger.tenantId,
@@ -110,6 +112,7 @@ export class PassengerRepository implements PassengerRepositoryPort {
       lat: passenger.lat,
       lon: passenger.lon,
       deviceIdDatatrack: passenger.deviceIdDatatrack,
+      deviceNameDatatrack: passenger.deviceNameDatatrack,
       ultimoGpsUpdate: passenger.ultimoGpsUpdate,
       routeId: passenger.routeId,
     });

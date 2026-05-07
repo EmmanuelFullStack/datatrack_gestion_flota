@@ -27,6 +27,12 @@ export class CreatePassengerDto {
   @MaxLength(100)
   deviceIdDatatrack?: string;
 
+  @ApiPropertyOptional({ description: 'Datatrack unit name/plate for display' })
+  @IsOptional()
+  @IsString()
+  @MaxLength(255)
+  deviceNameDatatrack?: string;
+
   @ApiPropertyOptional({ description: 'Assign to a route on creation' })
   @IsOptional()
   @IsUUID()

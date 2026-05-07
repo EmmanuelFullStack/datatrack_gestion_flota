@@ -16,6 +16,7 @@ export interface PassengerProps {
   lat?: number | null;
   lon?: number | null;
   deviceIdDatatrack?: string | null;
+  deviceNameDatatrack?: string | null;
   ultimoGpsUpdate?: Date | null;
   routeId?: string | null;
   tenantId: string;
@@ -31,6 +32,7 @@ export class Passenger extends BaseEntity {
   readonly lat: number | null;
   readonly lon: number | null;
   readonly deviceIdDatatrack: string | null;
+  readonly deviceNameDatatrack: string | null;
   readonly ultimoGpsUpdate: Date | null;
   readonly routeId: string | null;
   readonly tenantId: string;
@@ -44,6 +46,7 @@ export class Passenger extends BaseEntity {
     this.lat = props.lat ?? null;
     this.lon = props.lon ?? null;
     this.deviceIdDatatrack = props.deviceIdDatatrack ?? null;
+    this.deviceNameDatatrack = props.deviceNameDatatrack ?? null;
     this.ultimoGpsUpdate = props.ultimoGpsUpdate ?? null;
     this.routeId = props.routeId ?? null;
     this.tenantId = props.tenantId;
@@ -111,6 +114,7 @@ export class Passenger extends BaseEntity {
       lat: this.lat,
       lon: this.lon,
       deviceIdDatatrack: this.deviceIdDatatrack,
+      deviceNameDatatrack: this.deviceNameDatatrack,
       ultimoGpsUpdate: this.ultimoGpsUpdate,
       routeId: this.routeId,
       tenantId: this.tenantId,

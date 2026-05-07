@@ -216,8 +216,9 @@ export class PassengerMapComponent implements OnInit, AfterViewInit, OnDestroy {
       } else {
         const posChanged    = existing.passenger.lat !== p.lat || existing.passenger.lon !== p.lon;
         const statusChanged = existing.passenger.estado !== p.estado;
-        if (posChanged || statusChanged) {
-          existing.marker.setLatLng([p.lat, p.lon]);
+        const nameChanged   = existing.passenger.deviceNameDatatrack !== p.deviceNameDatatrack;
+        if (posChanged || statusChanged || nameChanged) {
+          if (posChanged) existing.marker.setLatLng([p.lat, p.lon]);
           existing.marker.setPopupContent(this.buildPopupContent(p));
           existing.passenger = p;
         }
@@ -231,10 +232,11 @@ export class PassengerMapComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.allPassengers[idx] = {
       ...this.allPassengers[idx],
-      lat:            event.lat,
-      lon:            event.lon,
-      estado:         event.estado as Passenger['estado'],
-      ultimoGpsUpdate: event.timestamp,
+      lat:                event.lat,
+      lon:                event.lon,
+      estado:             event.estado as Passenger['estado'],
+      ultimoGpsUpdate:    event.timestamp,
+      ...(event.deviceName ? { deviceNameDatatrack: event.deviceName } : {}),
     };
   }
 
@@ -299,9 +301,13 @@ export class PassengerMapComponent implements OnInit, AfterViewInit, OnDestroy {
     const lon     = p.lon?.toFixed(6)  ?? 'N/A';
     const updated = p.ultimoGpsUpdate ? new Date(p.ultimoGpsUpdate).toLocaleString('es-CO') : 'N/A';
     const color   = STATUS_COLORS[p.estado] ?? '#9e9e9e';
+    const plate   = p.deviceNameDatatrack
+      ? `<p style="margin:2px 0;font-size:13px"><b>Vehículo:</b> <span style="font-weight:700;color:#1a237e">${p.deviceNameDatatrack}</span></p>`
+      : '';
 
     return `<div class="popup-content">
       <h4 style="margin:0 0 8px;color:#1a237e">${p.nombre}</h4>
+      ${plate}
       <p style="margin:2px 0;font-size:13px"><b>Documento:</b> ${p.documento}</p>
       <p style="margin:2px 0;font-size:13px"><b>Teléfono:</b> ${p.telefono ?? '—'}</p>
       <p style="margin:4px 0;font-size:13px">

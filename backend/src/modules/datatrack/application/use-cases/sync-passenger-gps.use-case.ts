@@ -119,12 +119,17 @@ export class SyncPassengerGpsUseCase {
 
         let updated_ = passenger.withGpsUpdate(lat, lon);
         if (newEstado) updated_ = updated_.withUpdates({ estado: newEstado });
+        // Auto-populate device name from Datatrack unit if not already saved
+        if (!passenger.deviceNameDatatrack && unit.name) {
+          updated_ = updated_.withUpdates({ deviceNameDatatrack: unit.name });
+        }
 
         await this.passengerRepository.update(updated_);
         updated++;
 
         events.push({
           passengerId: passenger.id,
+          deviceName: unit.name,
           lat,
           lon,
           speed,

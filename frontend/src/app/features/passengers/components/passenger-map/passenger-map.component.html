@@ -80,6 +80,9 @@
           </div>
           <div class="passenger-info">
             <span class="p-name">{{ p.nombre }}</span>
+            <span class="p-plate" *ngIf="p.deviceNameDatatrack">
+              <mat-icon>directions_bus</mat-icon>{{ p.deviceNameDatatrack }}
+            </span>
             <span class="p-status" [class.active-transit]="p.estado === 'EN_TRANSITO'">{{ p.estado }}</span>
             <span class="p-coords" *ngIf="p.lat">{{ p.lat | number: '1.4-4' }}, {{ p.lon | number: '1.4-4' }}</span>
             <span class="no-gps" *ngIf="!p.lat">Sin señal GPS</span>

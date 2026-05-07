@@ -15,6 +15,7 @@ import { ConfigService } from '@nestjs/config';
 
 export interface GpsUpdateEvent {
   passengerId: string;
+  deviceName?: string;
   lat: number;
   lon: number;
   speed: number;

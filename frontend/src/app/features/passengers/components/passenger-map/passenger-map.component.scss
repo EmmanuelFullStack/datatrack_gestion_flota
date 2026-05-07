@@ -160,6 +160,8 @@
       .p-name  { display: block; font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
       .p-status { display: block; font-size: 11px; color: #757575; margin-top: 2px;
         &.active-transit { color: #1a237e; font-weight: 600; } }
+      .p-plate  { display: flex; align-items: center; gap: 3px; font-size: 11px; color: #1a237e; font-weight: 600; margin-top: 1px;
+        mat-icon { font-size: 12px; width: 12px; height: 12px; } }
       .p-coords { display: block; font-size: 10px; color: #4caf50; margin-top: 2px; font-family: monospace; }
       .no-gps   { display: block; font-size: 11px; color: #bdbdbd; margin-top: 2px; }
     }

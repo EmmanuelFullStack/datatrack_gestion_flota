@@ -31,4 +31,10 @@ export class UpdatePassengerDto {
   @IsString()
   @MaxLength(100)
   deviceIdDatatrack?: string;
+
+  @ApiPropertyOptional({ description: 'Datatrack unit name/plate for display' })
+  @IsOptional()
+  @IsString()
+  @MaxLength(255)
+  deviceNameDatatrack?: string;
 }

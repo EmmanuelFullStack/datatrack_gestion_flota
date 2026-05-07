@@ -35,19 +35,33 @@
         </mat-select>
       </mat-form-field>
 
-      <div class="row-fields">
-        <mat-form-field appearance="outline">
-          <mat-label>Estado</mat-label>
-          <mat-select formControlName="estado">
-            <mat-option *ngFor="let e of estadoOptions" [value]="e">{{ e }}</mat-option>
-          </mat-select>
-        </mat-form-field>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Estado</mat-label>
+        <mat-select formControlName="estado">
+          <mat-option *ngFor="let e of estadoOptions" [value]="e">{{ e }}</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-        <mat-form-field appearance="outline">
-          <mat-label>ID Dispositivo</mat-label>
-          <input matInput formControlName="deviceIdDatatrack" placeholder="Opcional">
-        </mat-form-field>
-      </div>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Vehículo / Dispositivo GPS</mat-label>
+        <mat-icon matPrefix>directions_bus</mat-icon>
+        <mat-select formControlName="deviceIdDatatrack" (selectionChange)="onUnitSelected($event)">
+          <mat-option [value]="null">Sin dispositivo asignado</mat-option>
+          <mat-option *ngIf="loadingUnits" disabled>
+            <span style="color:#9e9e9e">Cargando unidades...</span>
+          </mat-option>
+          <mat-option *ngFor="let u of units" [value]="u.id.toString()">
+            <span class="unit-option">
+              <strong>{{ u.name }}</strong>
+              <span class="unit-id">ID: {{ u.id }}</span>
+              <span class="unit-gps" *ngIf="u.position">
+                &bull; {{ u.position.speed }} km/h
+              </span>
+            </span>
+          </mat-option>
+        </mat-select>
+        <mat-hint *ngIf="!loadingUnits && units.length === 0">No se pudieron cargar las unidades Datatrack</mat-hint>
+      </mat-form-field>
     </div>
   </form>
 </mat-dialog-content>
