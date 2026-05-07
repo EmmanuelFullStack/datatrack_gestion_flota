@@ -89,7 +89,7 @@ export class PassengerFormComponent implements OnInit, OnDestroy {
       .subscribe((r) => (this.routes = r));
 
     this.loadingUnits = true;
-    this.datatrkService.getUnits()
+    this.datatrkService.getAvailableUnits(this.passengerId ?? undefined)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (units) => { this.units = units; this.loadingUnits = false; },

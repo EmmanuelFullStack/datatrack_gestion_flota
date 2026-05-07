@@ -1,5 +1,5 @@
-import { Controller, Get, Param, ParseUUIDPipe, Post, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Controller, Get, Param, ParseUUIDPipe, Post, Query, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { GetUnitPositionsUseCase } from '../../application/use-cases/get-unit-positions.use-case';
 import { CreateLocatorUseCase } from '../../application/use-cases/create-locator.use-case';
 import { GetAlarmsUseCase } from '../../application/use-cases/get-alarms.use-case';
@@ -32,6 +32,18 @@ export class DatatrackController {
   @ApiResponse({ type: [DatatrackUnitResponseDto] })
   async getAllUnits(): Promise<DatatrackUnitResponseDto[]> {
     const units = await this.getUnitPositions.execute();
+    return units as unknown as DatatrackUnitResponseDto[];
+  }
+
+  @Get('units/available')
+  @ApiOperation({ summary: 'Get Datatrack units not already assigned to another passenger' })
+  @ApiQuery({ name: 'excludePassengerId', required: false, type: String })
+  @ApiResponse({ type: [DatatrackUnitResponseDto] })
+  async getAvailableUnits(
+    @CurrentUser() user: JwtPayload,
+    @Query('excludePassengerId') excludePassengerId?: string,
+  ): Promise<DatatrackUnitResponseDto[]> {
+    const units = await this.getUnitPositions.executeAvailable(user.tenantId!, excludePassengerId);
     return units as unknown as DatatrackUnitResponseDto[];
   }
 

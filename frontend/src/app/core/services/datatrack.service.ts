@@ -25,4 +25,9 @@ export class DatatrackService {
   getUnits(): Observable<DatatrackUnit[]> {
     return this.http.get<DatatrackUnit[]>(`${this.url}/units`);
   }
+
+  getAvailableUnits(excludePassengerId?: string): Observable<DatatrackUnit[]> {
+    const params = excludePassengerId ? { excludePassengerId } : {};
+    return this.http.get<DatatrackUnit[]>(`${this.url}/units/available`, { params });
+  }
 }
