@@ -68,6 +68,9 @@ export interface Passenger {
   estado: 'PENDIENTE' | 'EMBARCADO' | 'EN_TRANSITO' | 'LLEGO';
   lat: number | null;
   lon: number | null;
+  speed?: number | null;
+  heading?: number | null;
+  satellites?: number | null;
   deviceIdDatatrack: string | null;
   deviceNameDatatrack: string | null;
   ultimoGpsUpdate: string | null;
@@ -94,6 +97,7 @@ export interface GpsUpdateEvent {
   lon: number;
   speed: number;
   heading: number;
+  satellites: number;
   estado: string;
   timestamp: string;
   tenantId: string;

@@ -76,12 +76,12 @@ export class Passenger extends BaseEntity {
     return this.estado === PassengerEstado.EN_TRANSITO || this.estado === PassengerEstado.EMBARCADO;
   }
 
-  withGpsUpdate(lat: number, lon: number): Passenger {
+  withGpsUpdate(lat: number, lon: number, gpsTimestamp?: Date): Passenger {
     return Passenger.create({
       ...this.toProps(),
       lat,
       lon,
-      ultimoGpsUpdate: new Date(),
+      ultimoGpsUpdate: gpsTimestamp ?? new Date(),
       updatedAt: new Date(),
     });
   }

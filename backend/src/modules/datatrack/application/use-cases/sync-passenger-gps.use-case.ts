@@ -104,10 +104,11 @@ export class SyncPassengerGpsUseCase {
       if (!unit?.position) continue;
 
       try {
-        const lat    = Number(unit.position.lat);
-        const lon    = Number(unit.position.lon);
-        const speed  = Number(unit.position.speed);
-        const heading = Number(unit.position.heading);
+        const lat       = Number(unit.position.lat);
+        const lon       = Number(unit.position.lon);
+        const speed     = Number(unit.position.speed);
+        const heading   = Number(unit.position.heading);
+        const satellites = Number(unit.position.satellites);
 
         if (!isValidCoordinate(lat, lon) || !isFinite(speed) || speed < 0) {
           this.logger.warn(`Invalid GPS data for passenger ${passenger.id}: lat=${lat} lon=${lon} speed=${speed}`);
@@ -117,7 +118,7 @@ export class SyncPassengerGpsUseCase {
         const route = passenger.routeId ? routeCache.get(passenger.routeId) : null;
         const newEstado = this.resolveEstado(passenger, lat, lon, speed, route ?? null);
 
-        let updated_ = passenger.withGpsUpdate(lat, lon);
+        let updated_ = passenger.withGpsUpdate(lat, lon, unit.position.timestamp);
         if (newEstado) updated_ = updated_.withUpdates({ estado: newEstado });
         // Auto-populate device name from Datatrack unit if not already saved
         if (!passenger.deviceNameDatatrack && unit.name) {
@@ -134,6 +135,7 @@ export class SyncPassengerGpsUseCase {
           lon,
           speed,
           heading,
+          satellites,
           estado: newEstado ?? passenger.estado,
           timestamp: unit.position.timestamp.toISOString(),
           tenantId,

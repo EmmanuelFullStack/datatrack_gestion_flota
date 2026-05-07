@@ -20,6 +20,7 @@ export interface GpsUpdateEvent {
   lon: number;
   speed: number;
   heading: number;
+  satellites: number;
   estado: string;
   timestamp: string;
   tenantId: string;

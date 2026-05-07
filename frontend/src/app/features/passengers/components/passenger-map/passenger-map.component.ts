@@ -217,7 +217,8 @@ export class PassengerMapComponent implements OnInit, AfterViewInit, OnDestroy {
         const posChanged    = existing.passenger.lat !== p.lat || existing.passenger.lon !== p.lon;
         const statusChanged = existing.passenger.estado !== p.estado;
         const nameChanged   = existing.passenger.deviceNameDatatrack !== p.deviceNameDatatrack;
-        if (posChanged || statusChanged || nameChanged) {
+        const gpsMetaChanged = existing.passenger.speed !== p.speed || existing.passenger.satellites !== p.satellites;
+        if (posChanged || statusChanged || nameChanged || gpsMetaChanged) {
           if (posChanged) existing.marker.setLatLng([p.lat, p.lon]);
           existing.marker.setPopupContent(this.buildPopupContent(p));
           existing.passenger = p;
@@ -232,10 +233,13 @@ export class PassengerMapComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.allPassengers[idx] = {
       ...this.allPassengers[idx],
-      lat:                event.lat,
-      lon:                event.lon,
-      estado:             event.estado as Passenger['estado'],
-      ultimoGpsUpdate:    event.timestamp,
+      lat:             event.lat,
+      lon:             event.lon,
+      speed:           event.speed,
+      heading:         event.heading,
+      satellites:      event.satellites,
+      estado:          event.estado as Passenger['estado'],
+      ultimoGpsUpdate: event.timestamp,
       ...(event.deviceName ? { deviceNameDatatrack: event.deviceName } : {}),
     };
   }
@@ -297,13 +301,16 @@ export class PassengerMapComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private buildPopupContent(p: Passenger): string {
-    const lat     = p.lat?.toFixed(6)  ?? 'N/A';
-    const lon     = p.lon?.toFixed(6)  ?? 'N/A';
-    const updated = p.ultimoGpsUpdate ? new Date(p.ultimoGpsUpdate).toLocaleString('es-CO') : 'N/A';
-    const color   = STATUS_COLORS[p.estado] ?? '#9e9e9e';
-    const plate   = p.deviceNameDatatrack
+    const lat        = p.lat?.toFixed(6) ?? 'N/A';
+    const lon        = p.lon?.toFixed(6) ?? 'N/A';
+    const updated    = p.ultimoGpsUpdate ? new Date(p.ultimoGpsUpdate).toLocaleString('es-CO') : 'N/A';
+    const color      = STATUS_COLORS[p.estado] ?? '#9e9e9e';
+    const plate      = p.deviceNameDatatrack
       ? `<p style="margin:2px 0;font-size:13px"><b>Vehículo:</b> <span style="font-weight:700;color:#1a237e">${p.deviceNameDatatrack}</span></p>`
       : '';
+    const speedVal   = p.speed   != null ? `${p.speed.toFixed(1)} km/h`  : 'N/A';
+    const headingVal = p.heading != null ? `${p.heading}°`               : 'N/A';
+    const satVal     = p.satellites != null ? `${p.satellites}`           : 'N/A';
 
     return `<div class="popup-content">
       <h4 style="margin:0 0 8px;color:#1a237e">${p.nombre}</h4>
@@ -314,7 +321,9 @@ export class PassengerMapComponent implements OnInit, AfterViewInit, OnDestroy {
         <b>Estado:</b> <span style="color:${color};font-weight:600">${p.estado}</span>
       </p>
       <p style="margin:2px 0;font-size:11px;color:#757575"><b>Lat:</b> ${lat} | <b>Lon:</b> ${lon}</p>
-      <p style="margin:2px 0;font-size:11px;color:#757575"><b>Actualizado:</b> ${updated}</p>
+      <p style="margin:2px 0;font-size:11px;color:#757575"><b>Velocidad:</b> ${speedVal} &nbsp;|&nbsp; <b>Rumbo:</b> ${headingVal}</p>
+      <p style="margin:2px 0;font-size:11px;color:#757575"><b>Satélites:</b> ${satVal}</p>
+      <p style="margin:2px 0;font-size:11px;color:#757575"><b>Reporte GPS:</b> ${updated}</p>
     </div>`;
   }
 }
