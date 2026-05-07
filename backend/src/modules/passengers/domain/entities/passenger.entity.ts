@@ -63,6 +63,7 @@ export class Passenger extends BaseEntity {
       lat: props.lat ?? null,
       lon: props.lon ?? null,
       deviceIdDatatrack: props.deviceIdDatatrack ?? null,
+      deviceNameDatatrack: props.deviceNameDatatrack ?? null,
       ultimoGpsUpdate: props.ultimoGpsUpdate ?? null,
       routeId: props.routeId ?? null,
       tenantId: props.tenantId,
